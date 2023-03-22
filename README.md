@@ -5,9 +5,9 @@ dtSNE and JEDI algorithms for Skoltech's ML 2023 course
 ### Reference
 Based on these papers:
 
-Jonas Fischer, Rebekka Burkholz, Jilles Vreeken, *Preserving local densities in low-dimensional embeddings*, https://arxiv.org/pdf/2301.13732.pdf
+* Jonas Fischer, Rebekka Burkholz, Jilles Vreeken, *Preserving local densities in low-dimensional embeddings*, https://arxiv.org/pdf/2301.13732.pdf
 
-L.J.P. van der Maaten and G.E. Hinton. Visualizing High-Dimensional Data Using t-SNE. Journal of Machine Learning Research 9(Nov):2579-2605, 2008. https://lvdmaaten.github.io/publications/papers/JMLR_2008.pdf
+* L.J.P. van der Maaten and G.E. Hinton. Visualizing High-Dimensional Data Using t-SNE. Journal of Machine Learning Research 9(Nov):2579-2605, 2008. https://lvdmaaten.github.io/publications/papers/JMLR_2008.pdf
 
 Code is based on original implementation found [here](https://lvdmaaten.github.io/tsne/code/tsne_python.zip)
 
