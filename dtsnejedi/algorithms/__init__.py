@@ -1,3 +1,3 @@
 from .dtsne import dtsne
-
-__all__ = ['dtsne']
+from .jedi import jedi
+__all__ = ['dtsne','jedi']
