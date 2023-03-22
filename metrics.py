@@ -128,3 +128,14 @@ def reconstruction_quality(pts1, pts2, k=100, plot=False):
         plt.legend()
         plt.show()
     return rho, rho_knn, rho_r
+
+
+if __name__=='__main__':
+    data = np.random.rand(1500, 3)
+    O = sps.ortho_group.rvs(3)
+    trasformed_data = data @ O
+    rho, rho_knn, rho_r = reconstruction_quality(data, trasformed_data)
+    print('Calculated metrics:', rho, rho_knn, rho_r)
+    assert np.isclose(rho, 1)
+    assert np.isclose(rho_knn, 1)
+    assert np.isclose(rho_r, 1)
