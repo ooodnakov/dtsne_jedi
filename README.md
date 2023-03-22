@@ -12,7 +12,7 @@ L.J.P. van der Maaten and G.E. Hinton. Visualizing High-Dimensional Data Using t
 Code is based on original implementation found [here](https://lvdmaaten.github.io/tsne/code/tsne_python.zip)
 
 ### Running
-To run dtSNE with 300 optimizer iteratiion and 30 perplexity use this:
+To run dtSNE with 300 optimization iterations and 30 perplexity use this:
 ```shell
 python tsne.py --dens 1 --iter 300 --perp 30
 ```
