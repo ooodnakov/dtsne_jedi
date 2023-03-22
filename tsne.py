@@ -168,7 +168,7 @@ def tsne(X=np.array([]), no_dims=2, perplexity=30.0, max_iter=1000, dens=False, 
     P = np.maximum(P, np.finfo(np.double).eps)
     C_old = np.sum(P)+100
     # Run iterations
-    for iter in range(max_iter):
+    for iter in tqdm.tqdm(range(max_iter)):
 
         # Compute pairwise affinities
         sum_Y = np.sum(np.square(Y), 1)
@@ -203,7 +203,8 @@ def tsne(X=np.array([]), no_dims=2, perplexity=30.0, max_iter=1000, dens=False, 
         #Y = Y - np.tile(np.mean(Y, 0), (n, 1))
 
         # Compute current value of cost function
-        if (iter + 1) % 10 == 0 and verbose > 1:
+        
+        if (iter + 1) % 50 == 0 and verbose > 1:
             C = np.sum(P * np.log(P / Q))
             if abs(C-C_old)<5e-5 and iter > 100:
                 print("Early stopping due to small change", C, C_old)
@@ -273,6 +274,7 @@ if __name__ == "__main__":
         else:
             y = np.zeros((X.shape[0]))
     else:
+        np.random.seed(6)
         X, y = get_gaussian_data(n_clusters=4)
     
     # X = np.loadtxt("mnist2500_X.txt")
