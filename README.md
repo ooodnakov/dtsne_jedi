@@ -9,7 +9,7 @@ Jonas Fischer, Rebekka Burkholz, Jilles Vreeken, *Preserving local densities in 
 
 L.J.P. van der Maaten and G.E. Hinton. Visualizing High-Dimensional Data Using t-SNE. Journal of Machine Learning Research 9(Nov):2579-2605, 2008. https://lvdmaaten.github.io/publications/papers/JMLR_2008.pdf
 
-Code is based on original implementation found ![here][https://lvdmaaten.github.io/tsne/code/tsne_python.zip]
+Code is based on original implementation found [here][https://lvdmaaten.github.io/tsne/code/tsne_python.zip]
 
 ### Running
 To run dtSNE with 300 optimizer iteratiion and 30 perplexity use this:
