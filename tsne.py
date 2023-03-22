@@ -129,14 +129,14 @@ def pca(X=np.array([]), no_dims=50):
     return Y
 
 
-def tsne(X=np.array([]), no_dims=2, perplexity=30.0, max_iter=1000, dens=False):
-    np.random.seed(1)
+def tsne(X=np.array([]), no_dims=2, perplexity=30.0, max_iter=1000, dens=False, verbose=1, random_seed=None):
     """
         Runs t-SNE on the dataset in the NxD array X to reduce its
         dimensionality to no_dims dimensions. The syntaxis of the function is
         `Y = tsne.tsne(X, perplexity), where X is an NxD NumPy array.
     """
-
+    if random_seed:
+        np.random.seed(random_seed)
     # Check inputs
     if isinstance(no_dims, float):
         print("Error: array X should have type float.")
@@ -144,7 +144,8 @@ def tsne(X=np.array([]), no_dims=2, perplexity=30.0, max_iter=1000, dens=False):
     if round(no_dims) != no_dims:
         print("Error: number of dimensions should be an integer.")
         return -1
-
+    if dens:
+        print("Runs dtSNE variant of algorithm.")
     # Initialize variables
     #X = pca(X, 50).real
     (n, d) = X.shape
@@ -202,7 +203,7 @@ def tsne(X=np.array([]), no_dims=2, perplexity=30.0, max_iter=1000, dens=False):
         #Y = Y - np.tile(np.mean(Y, 0), (n, 1))
 
         # Compute current value of cost function
-        if (iter + 1) % 10 == 0:
+        if (iter + 1) % 10 == 0 and verbose > 1:
             C = np.sum(P * np.log(P / Q))
             if abs(C-C_old)<5e-5 and iter > 100:
                 print("Early stopping due to small change", C, C_old)
@@ -251,6 +252,7 @@ if __name__ == "__main__":
     parser.add_argument("--nDims", type=int, default=2, help="nDims")
     parser.add_argument("--iter", type=int, default=300, help="iterations")
     parser.add_argument("--perp", type=float, default=30., help="perplexity")
+    parser.add_argument("--verbose", type=int, default=1, help="verbosity")
     parser.add_argument("--X", type=str, default=None, help="X, data, .npy file")
     parser.add_argument("--y", type=str, default=None, help="y, labels, .npy file")
 
@@ -259,6 +261,7 @@ if __name__ == "__main__":
     nDims = opt.nDims
     iter = opt.iter
     perp = opt.perp
+    verbose = opt.verbose
     X_path = opt.X
     y_path = opt.y
     # print("Run Y = tsne.tsne(X, no_dims, perplexity) to perform t-SNE on your dataset.")
@@ -276,7 +279,7 @@ if __name__ == "__main__":
     # labels = np.loadtxt("mnist2500_labels.txt")
     
     np.random.seed(2)
-    Y = tsne(X, nDims, perp, iter, dens)
+    Y = tsne(X, nDims, perp, iter, dens, verbose)
     plt.figure(figsize=(15,8))
     plt.subplot(1,2,1)
     plt.scatter(X[:, 0], X[:, 1], 3, y)
