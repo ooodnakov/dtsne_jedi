@@ -1,6 +1,13 @@
 # dtSNE and JEDI algorithms
 dtSNE and JEDI algorithms for Skoltech's ML 2023 course
 
+## Installation
+To install this package, inside repository run this:
+```python
+python -m pip install .
+```
+We hope that after that you can just import it via `import dtsnejedi`
+
 ## dtSNE
 ### Reference
 Based on these papers:
@@ -14,8 +21,8 @@ Code is based on original implementation found [here](https://lvdmaaten.github.i
 ### Running
 To run dtSNE with 300 optimization iterations and 30 perplexity use this:
 ```shell
-python tsne.py --dens 1 --iter 300 --perp 30
+python test.py --dens 1 --iter 300 --perp 30
 ```
 To use original tSNE implementation, change `dens` flag to `0`: `--dens 0`.
 
-For into about other flags, see `tsne.py` file.
+For into about other flags, see `test.py` file.
