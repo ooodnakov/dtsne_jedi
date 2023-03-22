@@ -19,10 +19,3 @@ python tsne.py --dens 1 --iter 300 --perp 30
 To use original tSNE implementation, change `dens` flag to `0`: `--dens 0`.
 
 For into about other flags, see `tsne.py` file.
-
-
-
-
-
-
-[https://lvdmaaten.github.io/tsne/code/tsne_python.zip]: [https://](https://lvdmaaten.github.io/tsne/code/tsne_python.zip)
