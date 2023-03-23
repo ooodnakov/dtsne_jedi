@@ -19,7 +19,7 @@ Based on these papers:
 Code is based on original implementation found [here](https://lvdmaaten.github.io/tsne/code/tsne_python.zip)
 
 ### Running
-To run dtSNE with 300 optimization iterations and 30 perplexity use this:
+To run dtSNE with 300 optimization iterations and 30 perplexity on toy-data, use this:
 ```shell
 python test.py --algo dtsne --n_iter 300 --perp 30
 ```
@@ -36,7 +36,7 @@ Based on these papers:
 Code is based on original tSNE implementation found [here](https://lvdmaaten.github.io/tsne/code/tsne_python.zip).
 
 ### Running
-To run JEDI with 300 optimization iterations and 30 perplexity use this:
+To run JEDI with 300 optimization iterations and 30 perplexity on toy-data, use this:
 ```shell
 python test.py --algo jedi --n_iter 300 --perp 30
 ```
