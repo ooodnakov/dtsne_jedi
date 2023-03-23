@@ -1,7 +1,6 @@
 
-from __future__ import absolute_import
 import numpy as np
-import tqdm
+from tqdm import tqdm
 from ..utils.utils import Hbeta, pca
 
 
@@ -40,11 +39,7 @@ def x2p(X=np.array([]), tol=1e-5, perplexity=30.0, dens=False):
     logU = np.log(perplexity)
 
     # Loop over all datapoints
-    for i in range(n):
-
-        # Print progress
-        if i % 500 == 0:
-            print("Computing P-values for point %d of %d..." % (i, n))
+    for i in tqdm(range(n)):
 
         # Compute the Gaussian kernel and entropy for the current precision
         betamin = -np.inf
@@ -83,55 +78,48 @@ def x2p(X=np.array([]), tol=1e-5, perplexity=30.0, dens=False):
             thisP, thisgamma = BetaDens(Di, beta, i)
             P[i, np.concatenate((np.r_[0:i], np.r_[i+1:n]))] = thisP
             gamma[i, np.concatenate((np.r_[0:i], np.r_[i+1:n]))] = thisgamma
-        # plt.plot(np.convolve(np.maximum(gamma[:,:50],1e-12).mean(0), np.ones(50), 'valid') / 50)
-        # plt.show()
-        #print(gamma, beta)
         gamma /= gamma.max()
     # Return final P-matrix
     print("Mean value of sigma: %f" % np.mean(np.sqrt(1 / beta)))
     return P, gamma
 
 
-def dtsne(X=np.array([]), no_dims=2, perplexity=30.0, max_iter=1000, dens=False, verbose=1, random_seed=None):
-    """
-        Runs t-SNE on the dataset in the NxD array X to reduce its
-        dimensionality to no_dims dimensions. The syntaxis of the function is
-        `Y = tsne.tsne(X, perplexity), where X is an NxD NumPy array.
-    """
+def dtsne(X=np.array([]), n_components=2, perplexity=30.0, n_iter=1000, dens=False, verbose=1, random_seed=None, initial_dims=None):
+    
     if random_seed:
         np.random.seed(random_seed)
     # Check inputs
-    if isinstance(no_dims, float):
+    if not isinstance(n_components, int):
         print("Error: array X should have type float.")
-        return -1
-    if round(no_dims) != no_dims:
-        print("Error: number of dimensions should be an integer.")
         return -1
     if dens:
         print("Runs dtSNE variant of algorithm.")
     # Initialize variables
-    #X = pca(X, 50).real
+    if initial_dims:
+        X = pca(X, initial_dims).real
     (n, d) = X.shape
     initial_momentum = 0.5
     final_momentum = 0.8
     eta = 500
     min_gain = 0.01
-    Y = pca(X, no_dims).real
+    Y = pca(X, n_components).real
     Y = 1e-4 * Y / np.std(Y)
-    dY = np.zeros((n, no_dims))
-    iY = np.zeros((n, no_dims))
-    gains = np.ones((n, no_dims))
+    dY = np.zeros((n, n_components))
+    iY = np.zeros((n, n_components))
+    gains = np.ones((n, n_components))
 
     # Compute P-values
     P, gamma = x2p(X, 1e-5, perplexity, dens)
     P = P + np.transpose(P)
     P = P / np.sum(P)
-    # early exaggeration
+    # Early exaggeration
     P = P * 4.  
     P = np.maximum(P, np.finfo(np.double).eps)
+    
     C_old = np.sum(P)+100
     # Run iterations
-    for iter in tqdm.tqdm(range(max_iter)):
+    print('Performing optimization...')
+    for iter in tqdm(range(n_iter)):
 
         # Compute pairwise affinities
         sum_Y = np.sum(np.square(Y), 1)
@@ -148,10 +136,10 @@ def dtsne(X=np.array([]), no_dims=2, perplexity=30.0, max_iter=1000, dens=False,
         PQ = P - Q
         if dens:
             for i in range(n):
-                dY[i, :] = 4 * np.sum(np.tile(PQ[:, i] * num[:, i] * gamma[:, i], (no_dims, 1)).T * (Y[i, :] - Y) , 0)
+                dY[i, :] = 4 * np.sum(np.tile(PQ[:, i] * num[:, i] * gamma[:, i], (n_components, 1)).T * (Y[i, :] - Y) , 0)
         else:
             for i in range(n):
-                dY[i, :] = np.sum(np.tile(PQ[:, i] * num[:, i], (no_dims, 1)).T * (Y[i, :] - Y), 0)
+                dY[i, :] = np.sum(np.tile(PQ[:, i] * num[:, i], (n_components, 1)).T * (Y[i, :] - Y), 0)
 
         # Perform the update
         if iter < 20:
@@ -179,12 +167,6 @@ def dtsne(X=np.array([]), no_dims=2, perplexity=30.0, max_iter=1000, dens=False,
         if iter == 100:
             P = P / 4.
     
-    # plt.figure(figsize=(10,10))
-    # plt.imshow(Q, cmap='hot', interpolation='nearest')
-    # plt.show()
-    # plt.figure(figsize=(10,10))
-    # plt.imshow(dY[:,:], cmap='hot', interpolation='nearest')
-    # plt.show()
     # Return solution
     return Y
 
