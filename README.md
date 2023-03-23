@@ -6,6 +6,11 @@ To install this package, inside repository run this:
 ```python
 python -m pip install .
 ```
+or this:
+```python
+python -m pip install dtsnejedi
+```
+
 We hope that after that you can just import it via `import dtsnejedi`
 
 ## dtSNE

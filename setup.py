@@ -6,4 +6,4 @@ setup(name = "dtsnejedi",
       author_email="me@dnakov.ooo",
       packages = find_packages(),
       install_requires = ['matplotlib','numpy','scipy','tqdm'],
-      version='0.1.1')
+      version='0.1.2')
