@@ -6,7 +6,7 @@ To install this package, inside repository run this:
 ```python
 python -m pip install .
 ```
-or this:
+or this from PyPi:
 ```python
 python -m pip install dtsnejedi
 ```
