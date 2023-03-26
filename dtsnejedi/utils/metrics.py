@@ -178,8 +178,8 @@ def neighbourhood_overlap_score(pts1, pts2, plot=False):
         plt.hlines(1, 0, 1, linestyle='--', color='black', alpha=0.5)
         plt.xlim(-0.05, 1.05)
         plt.ylim(-0.05, 1.05)
-        plt.xlabel("Neighbourhood size in % of data")
-        plt.ylabel("Neighbourhood overlap in %")
+        plt.xlabel("Neighbourhood size divided by dataset size")
+        plt.ylabel("Neighbourhood overlap score")
         plt.legend(loc="lower right")
         plt.show()
     return nos
