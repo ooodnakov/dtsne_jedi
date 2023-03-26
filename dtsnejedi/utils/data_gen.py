@@ -45,7 +45,7 @@ def get_dtsne_data(setting=0, **kwargs):
                 'G3-d': 2,
                 'G10-d': 3,
                 'U5-d': 4}
-        setting = names[kwargs[name]]
+        setting = names[kwargs['name']]
     X = []
     y = []
     n_cl = {0:3,1:3,2:3,3:10,4:5}
