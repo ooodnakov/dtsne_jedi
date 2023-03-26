@@ -4,7 +4,7 @@ from dtsnejedi.utils.data_gen import get_gaussian_data,get_gaussian_data_jedi
 import argparse
 import numpy as np
 import matplotlib.pyplot as plt
-
+import sys
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--algo", type=str, default='tsne', help="which algorithm to use")
@@ -15,6 +15,7 @@ if __name__ == "__main__":
     parser.add_argument("--beta", type=float, default=0.5, help="beta for jedi")
     parser.add_argument("--verb", type=int, default=1, help="verbosity")
     parser.add_argument("--X", type=str, default=None, help="X, data, .npy file")
+    parser.add_argument("--Z", type=str, default=None, help="Z, information matrix, .npy file")
     parser.add_argument("--y", type=str, default=None, help="y, labels, .npy file")
 
     opt = parser.parse_args()
@@ -26,11 +27,17 @@ if __name__ == "__main__":
     alpha = opt.alpha
     verbose = opt.verb
     X_path = opt.X
+    Z_path = opt.Z
     y_path = opt.y
     # print("Run Y = tsne.tsne(X, no_dims, perplexity) to perform t-SNE on your dataset.")
     # print("Running example on 2,500 MNIST digits...")
     if X_path:
-        X = np.load(X_path, allow_pickle=True)[np.random.choice()]
+        X = np.load(X_path, allow_pickle=True)
+        if algorithm=='jedi':
+            if Z_path:
+                Z = np.load(Z_path, allow_pickle=True)
+            else:
+                sys.exit('Z information matrix is required in case of JEDI algorithm')
         if y_path:
             y = np.load(y_path, allow_pickle=True)
         else:
@@ -44,7 +51,6 @@ if __name__ == "__main__":
             Z = np.random.randn(X.shape[0], X.shape[0]) ** 2 
             Z = Z + Z.T
             Z[0:n_samples[0] + n_samples[1], 0:n_samples[0] + n_samples[1]] = D[0:n_samples[0] + n_samples[1], 0:n_samples[0] + n_samples[1]]
-
         else:    
             X, y = get_gaussian_data(n_clusters=4)
     
