@@ -38,7 +38,14 @@ def get_gaussian_data_jedi(dims=2, n_clusters=5):
         cluster_size.append(num_samples)
     return np.concatenate(X), np.concatenate(y), cluster_size
 
-def get_dtsne_data(setting=0):
+def get_dtsne_data(setting=0, **kwargs):
+    if 'name' in kwargs:
+        names = {'2D data': 0,
+                'G3-s': 1,
+                'G3-d': 2,
+                'G10-d': 3,
+                'U5-d': 4}
+        setting = names[kwargs[name]]
     X = []
     y = []
     n_cl = {0:3,1:3,2:3,3:10,4:5}
