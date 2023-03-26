@@ -21,7 +21,7 @@ def rho(pts1, pts2):
     dists2 -= pts2[None, :, :]
     dists2 = np.linalg.norm(dists2, axis=-1)
 
-    stat, _ = sps.spearmanr(dists1, dists2, axis=None)
+    stat, _ = sps.pearsonr(dists1.ravel(), dists2.ravel())
     return stat
 
 
@@ -49,7 +49,7 @@ def rho_r(pts1, pts2, k=100):
     radii1 = sorted_dists1[k]
     radii2 = sorted_dists2[k]
 
-    stat, _ = sps.spearmanr(radii1, radii2, axis=None)
+    stat, _ = sps.pearsonr(radii1.ravel(), radii2.ravel())
     return stat
 
 
@@ -77,9 +77,8 @@ def rho_knn(pts1, pts2, k=100):
     k_nearest_neigbours1 = sorted_dists1[1:k+1]
     k_nearest_neigbours2 = sorted_dists2[1:k+1]
 
-    stat, _ = sps.spearmanr(k_nearest_neigbours1,
-                            k_nearest_neigbours2,
-                            axis=None)
+    stat, _ = sps.pearsonr(k_nearest_neigbours1.ravel(),
+                           k_nearest_neigbours2.ravel())
     return stat
 
 
@@ -109,11 +108,10 @@ def reconstruction_quality(pts1, pts2, k=100, plot=False):
     radii1 = sorted_dists1[k]
     radii2 = sorted_dists2[k]
 
-    rho, _ = sps.spearmanr(dists1, dists2, axis=None)
-    rho_knn, _ = sps.spearmanr(k_nearest_neigbours1,
-                               k_nearest_neigbours2,
-                               axis=None)
-    rho_r, _ = sps.spearmanr(radii1, radii2, axis=None)
+    rho, _ = sps.pearsonr(dists1.ravel(), dists2.ravel())
+    rho_knn, _ = sps.pearsonr(k_nearest_neigbours1.ravel(),
+                               k_nearest_neigbours2.ravel())
+    rho_r, _ = sps.pearsonr(radii1.ravel(), radii2.ravel())
     if plot:
         plt.title("Reconstruction quality", fontsize=15)
         plt.bar([0, 1, 2], [rho, -rho_knn, rho_r], width=0.5,
