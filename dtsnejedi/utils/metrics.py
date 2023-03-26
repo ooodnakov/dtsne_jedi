@@ -46,10 +46,19 @@ def rho_r(pts1, pts2, k=100):
 
     sorted_dists1 = np.sort(dists1, axis=0)
     sorted_dists2 = np.sort(dists2, axis=0)
+    
     radii1 = sorted_dists1[k]
     radii2 = sorted_dists2[k]
+    
+    rel_radii1 = np.zeros((n_points, n_points))
+    rel_radii1 += radii1[:, None]
+    rel_radii1 /= radii1[None, :]
+    
+    rel_radii2 = np.zeros((n_points, n_points))
+    rel_radii2 += radii2[:, None]
+    rel_radii2 /= radii2[None, :]
 
-    stat, _ = sps.pearsonr(radii1.ravel(), radii2.ravel())
+    stat, _ = sps.pearsonr(rel_radii1.ravel(), rel_radii2.ravel())
     return stat
 
 
@@ -105,13 +114,22 @@ def reconstruction_quality(pts1, pts2, k=100, plot=False):
     sorted_dists2 = np.sort(dists2, axis=0)
     k_nearest_neigbours1 = sorted_dists1[1:k+1]
     k_nearest_neigbours2 = sorted_dists2[1:k+1]
+    
     radii1 = sorted_dists1[k]
     radii2 = sorted_dists2[k]
+    
+    rel_radii1 = np.zeros((n_points, n_points))
+    rel_radii1 += radii1[:, None]
+    rel_radii1 /= radii1[None, :]
+    
+    rel_radii2 = np.zeros((n_points, n_points))
+    rel_radii2 += radii2[:, None]
+    rel_radii2 /= radii2[None, :]
 
     rho, _ = sps.pearsonr(dists1.ravel(), dists2.ravel())
     rho_knn, _ = sps.pearsonr(k_nearest_neigbours1.ravel(),
                                k_nearest_neigbours2.ravel())
-    rho_r, _ = sps.pearsonr(radii1.ravel(), radii2.ravel())
+    rho_r, _ = sps.pearsonr(rel_radii1.ravel(), rel_radii2.ravel())
     if plot:
         plt.title("Reconstruction quality", fontsize=15)
         plt.bar([0, 1, 2], [rho, -rho_knn, rho_r], width=0.5,
