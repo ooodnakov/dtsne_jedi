@@ -48,6 +48,9 @@ python test.py --algo jedi --n_iter 300 --perp 30
 
 For into about other flags, see `test.py` file.
 
+Or you can download only the "JEDI_experiments.ipynb" file and run the algorithm using the dataset described in Appendix B.3 in the article mentioned above.
+
+
 ## Notes
 * Seems like, this tSNE and dtSNE algorimth returns matrix rotated by 180 degrees compared to other tSNE implementations (like in openTSNE and sklearn.manifold). It can be fixed by multiplying 180 degree rotation matrix.
 * All of these algorithms are extremely slow. Maybe in the future, we can do similar optimizations found in openTSNE.
